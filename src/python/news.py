@@ -9,6 +9,8 @@ from numpy import array
 import numpy as np
 import json
 import time
+import nltk
+
 
 
 
@@ -49,9 +51,12 @@ def getBody(url):
     except:
         body='N/A'
     return body
-
-
-
+def sigWords(url):
+    article = Article(url)
+    article.download()
+    article.parse()
+    article.nlp()
+    return article.keywords, article.summary
 
 
 

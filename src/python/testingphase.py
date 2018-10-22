@@ -10,9 +10,10 @@ ticker = 'AAPL'
 
 
 articleUrls = news.getNews(ticker, day)
-print(articleUrls)
-for url in articleUrls:
-	print(news.getBody(url))
+#print(articleUrls)
+keywords, summary = news.sigWords(articleUrls[0])
+print(keywords)
+print(summary)
 #dateRevQuarterly = earnings.getDateRevQuarterly("AAPL")
 #print(dateRevQuarterly)
 
