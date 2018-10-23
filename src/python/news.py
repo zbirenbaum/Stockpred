@@ -33,6 +33,7 @@ def getNews(ticker, day):
                                         sources='abc-news, associated-press, australian-financial-review, bbc-news, bloomberg, business-insider, bussiness-insider-uk, cnbc, cnn, financial-times, financial-post, fortune, nbc-news, newsweek, the-economist, the-new-york-times, time, usa-today',                                       
                                         sort_by='popularity',
                                         )
+    
     for i in getArticles['articles']:
         if (ticker in i["title"]):
             articleUrls.append(i['url'])

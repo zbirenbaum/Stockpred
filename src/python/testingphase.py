@@ -1,20 +1,23 @@
 import earnings
 import news
 import datetime
+import cik
+import financials
 
-currenttime = datetime.datetime.now()
-day = currenttime.strftime("%Y/%m/%d")
+#currenttime = datetime.datetime.now()
+#day = currenttime.strftime("%Y/%m/%d")
+day="10/22/18"
 ticker = 'AAPL'
 
 
 
-
-articleUrls = news.getNews(ticker, day)
+cik = cik.tickerLookup(ticker)
+print(cik)
+data = financials.getReport('320193', "2018", "3")
+#articleUrls = news.getNews(ticker, day)
 #print(articleUrls)
-keywords, summary = news.sigWords(articleUrls[0])
-print(keywords)
-print(summary)
-#dateRevQuarterly = earnings.getDateRevQuarterly("AAPL")
+#keywords = news.sigWords(articleUrls[0])
+#dateRevQuarterly = earnings.getDateRevQuarterly("AAPL") #kinda slow tbh
 #print(dateRevQuarterly)
 
 
