@@ -21,7 +21,7 @@ def getReport(cik, year, quarter):
 	    		compiled.append(row)
 	    data = DataFrame(compiled, columns=headers)
 	    data = data.sort_values(['ddate','tag'], ascending=False)
-	    print(data)
+	    #print(data)
 	    writer = pd.ExcelWriter('output.xlsx') #check full output
 	    data.to_excel(writer,'Sheet1')
 	    writer.save()
