@@ -24,9 +24,9 @@ def getDateArray(data, dropdup, ticker):
 	emptylist = []
 	data2 = []
 	ticker=ticker
-	tag = []
+	tag = {}
 	counter = 1
-	headerlist = []
+	headerlist = {}
 	header = 0
 	dropdup = list(dropdup)
 	for tags in dropdup:
@@ -34,34 +34,38 @@ def getDateArray(data, dropdup, ticker):
 		emptylist = []
 		data2 = []
 		header = 0
-		headerlist = []
+		headerlist = {}
 		for rows in listbody:
 			templist = []
 			data2 = []
 			if rows['tag'] == tags:
-				headerlist.append(str(header) + ": ")
+				#headerlist.append(str(header) )
 				header = header + 1
+				blanklist = []
 				for i in range(0,8):
-					data2.append(rows.tolist()[i])
-					templist.append(str(data.columns[i]) +": ")
-					templist.append(data2)
-					data2 = []
-				headerlist.append(templist)
-		tag.append(tags + ": ")
-		tag.append(headerlist)
+					if i != 3:
+						templist.append(str(data.columns[i]))
+						blanklist.append(rows.tolist()[i])
+						#templist.append(data2)
+						data2 = []
+				todict = { j : blanklist[templist.index(j)] for j in templist}
+				headerlist.update({header:todict})
+		tag[tags] = (headerlist)
 
 
 
 		
 	values=data.columns
+
 	heirarchy = [ticker, tag]
 	templist = []
 	nums = [0]
 	data = []
 
-	tree = []
-	tree.append(ticker+": ")
-	tree.append(tag)
+	tree = {}
+	
+	tree[ticker] = tag
+	#tree.append(tag)
 	#tree.append(ticker)
 	#tree[0] = []
 
@@ -77,7 +81,7 @@ def getDateArray(data, dropdup, ticker):
 		for rows in listbody:
 			if rows['tag'] == tag[counter]:
 				for i in range(0,8):
-					templist.append(str(data.columns[i]) +": " +  rows.tolist()[i])
+					templist.append(str(data.columns[i])  +  rows.tolist()[i])
 
 				tree[0][counter].append(templist)
 
@@ -89,41 +93,21 @@ def getDateArray(data, dropdup, ticker):
 
 	#print(tree)
 	with open("dataFile.json", "w") as dataFile:
-		string = simplejson.dumps(tree, indent=4, sort_keys=False) #later for db
+		string = simplejson.dumps(tree, indent=4, sort_keys=False)
+		string.replace(']:', ']')
+
 		dataFile.write(string)
 	dataFile.close()
 
-def numDuplicates(r, tag):
+def formatJson():
+	print("todo")
 
 
 
-
-
-
-
-
-
-	"""
-	df = pd.DataFrame()
-	toappend=[]
-	tempholder = []
-	for tags in dropdup:
-		tempholder=[]
-		for row in rows:
-			if row['tag'] == tags:
-				tempholder.append(row)
-		##generate nested dict
-	#print(pd.Series(toappend).to_json())
-	dataFile = open("dataFile.json", "w")
-
-	dataFile.write(simplejson.dumps(simplejson.loads(df.to_json()), indent=4, sort_keys=False)) #later for db
-	dataFile.close()
-	#table[tags] = toappend.to_json()
-	#list of row with all objects
-	"""
 data = financials.getReport('320193', "2018", "3")
-
 dropdup = set(data['tag'])
 print(dropdup)
 listtags = list(dropdup)
+
 getDateArray(data, dropdup, "AAPL")
+
