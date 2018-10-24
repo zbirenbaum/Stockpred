@@ -20,11 +20,13 @@ def getReport(cik, year, quarter):
 	    	if(row[0].split('-')[0] == cik):
 	    		compiled.append(row)
 	    data = DataFrame(compiled, columns=headers)
-	    data = data.sort_values(['ddate','tag'], ascending=False)
+	    #data = data.sort_values(['ddate','tag'], ascending=False)
 	    #print(data)
-	    writer = pd.ExcelWriter('output.xlsx') #check full output
-	    data.to_excel(writer,'Sheet1')
-	    writer.save()
+
+		#data.drop_duplicates(subset=data['tag'],keep=first, inplace = False)
+	    #writer = pd.ExcelWriter('output.xlsx') #check full output
+	    #data.to_excel(writer,'Sheet1')
+	    #writer.save()
 	    #print(compiled)
 	    return data
 
