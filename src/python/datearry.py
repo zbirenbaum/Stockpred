@@ -9,8 +9,9 @@ import simplejson
 import json
 import sys
 import numpy as np
+import os
 
-def getDateArray(data, dropdup, ticker):
+def getDateArray(data, dropdup, ticker, year, quarter):
 	dates = [] # holds all years
 	rows = []
 	listbody = []
@@ -20,7 +21,7 @@ def getDateArray(data, dropdup, ticker):
 		##dates.append(row[1]['ddate'][:4])
 	#print(rows)
 	#print(data.index)
-
+	#todo: populate list of dates and iterate data backwords to get most recents? or keep as qtr and get report type?
 	emptylist = []
 	data2 = []
 	ticker=ticker
@@ -29,6 +30,7 @@ def getDateArray(data, dropdup, ticker):
 	headerlist = {}
 	header = 0
 	dropdup = list(dropdup)
+	print(dropdup)
 	for tags in dropdup:
 		templist = []
 		emptylist = []
@@ -49,7 +51,7 @@ def getDateArray(data, dropdup, ticker):
 						#templist.append(data2)
 						data2 = []
 				todict = { j : blanklist[templist.index(j)] for j in templist}
-				headerlist.update({header:todict})
+				headerlist.update({todict['ddate'] + "-" + todict['qtrs']:todict})
 		tag[tags] = (headerlist)
 
 
@@ -63,7 +65,7 @@ def getDateArray(data, dropdup, ticker):
 	data = []
 
 	tree = {}
-	
+	print(tag)
 	tree[ticker] = tag
 	#tree.append(tag)
 	#tree.append(ticker)
@@ -92,7 +94,8 @@ def getDateArray(data, dropdup, ticker):
 
 
 	#print(tree)
-	with open("dataFile.json", "w") as dataFile:
+	#with open('C:\\Users\\Zach\\Documents\\GitHub\\Stockpred\\src\\python\\Financials\\JSON\\' + year+ "Q" + quarter + "\\" + ticker +".json"), "w+") as dataFile:
+	with open(ticker +".json", "w") as dataFile:
 		string = simplejson.dumps(tree, indent=4, sort_keys=False)
 		string.replace(']:', ']')
 
@@ -103,11 +106,4 @@ def formatJson():
 	print("todo")
 
 
-
-data = financials.getReport('320193', "2018", "3")
-dropdup = set(data['tag'])
-print(dropdup)
-listtags = list(dropdup)
-
-getDateArray(data, dropdup, "AAPL")
 
